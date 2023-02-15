@@ -1,5 +1,6 @@
 const createHash = require('create-hash');
 const createHmac = require('create-hmac');
+const Buffer = require('Buffer');
 
 export function hash160(buffer: Buffer): Buffer {
   const sha256Hash: Buffer = createHash('sha256')

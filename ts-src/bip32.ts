@@ -3,6 +3,7 @@ const bs58check = require('bs58check');
 const ecc = require('tiny-secp256k1');
 const typeforce = require('typeforce');
 const wif = require('wif');
+const { Buffer } = require('buffer');
 
 interface Network {
   wif: number;

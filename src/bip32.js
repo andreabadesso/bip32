@@ -1,10 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const crypto = require("./crypto");
+import * as crypto from './crypto';
 const bs58check = require('bs58check');
 const ecc = require('tiny-secp256k1');
 const typeforce = require('typeforce');
 const wif = require('wif');
+const { Buffer } = require('buffer');
 const UINT256_TYPE = typeforce.BufferN(32);
 const NETWORK_TYPE = typeforce.compile({
     wif: typeforce.UInt8,
@@ -213,7 +212,7 @@ class BIP32 {
         return ecc.verify(hash, this.publicKey, signature);
     }
 }
-function fromBase58(inString, network) {
+export function fromBase58(inString, network) {
     const buffer = bs58check.decode(inString);
     if (buffer.length !== 78)
         throw new TypeError('Invalid buffer length');
@@ -252,11 +251,9 @@ function fromBase58(inString, network) {
     }
     return hd;
 }
-exports.fromBase58 = fromBase58;
-function fromPrivateKey(privateKey, chainCode, network) {
+export function fromPrivateKey(privateKey, chainCode, network) {
     return fromPrivateKeyLocal(privateKey, chainCode, network);
 }
-exports.fromPrivateKey = fromPrivateKey;
 function fromPrivateKeyLocal(privateKey, chainCode, network, depth, index, parentFingerprint) {
     typeforce({
         privateKey: UINT256_TYPE,
@@ -267,10 +264,9 @@ function fromPrivateKeyLocal(privateKey, chainCode, network, depth, index, paren
         throw new TypeError('Private key not in range [1, n)');
     return new BIP32(privateKey, undefined, chainCode, network, depth, index, parentFingerprint);
 }
-function fromPublicKey(publicKey, chainCode, network) {
+export function fromPublicKey(publicKey, chainCode, network) {
     return fromPublicKeyLocal(publicKey, chainCode, network);
 }
-exports.fromPublicKey = fromPublicKey;
 function fromPublicKeyLocal(publicKey, chainCode, network, depth, index, parentFingerprint) {
     typeforce({
         publicKey: typeforce.BufferN(33),
@@ -282,7 +278,7 @@ function fromPublicKeyLocal(publicKey, chainCode, network, depth, index, parentF
         throw new TypeError('Point is not on the curve');
     return new BIP32(undefined, publicKey, chainCode, network, depth, index, parentFingerprint);
 }
-function fromSeed(seed, network) {
+export function fromSeed(seed, network) {
     typeforce(typeforce.Buffer, seed);
     if (seed.length < 16)
         throw new TypeError('Seed should be at least 128 bits');
@@ -294,4 +290,3 @@ function fromSeed(seed, network) {
     const IR = I.slice(32);
     return fromPrivateKey(IL, IR, network);
 }
-exports.fromSeed = fromSeed;

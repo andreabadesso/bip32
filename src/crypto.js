@@ -1,8 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const createHash = require('create-hash');
 const createHmac = require('create-hmac');
-function hash160(buffer) {
+const Buffer = require('Buffer');
+export function hash160(buffer) {
     const sha256Hash = createHash('sha256')
         .update(buffer)
         .digest();
@@ -17,10 +16,8 @@ function hash160(buffer) {
             .digest();
     }
 }
-exports.hash160 = hash160;
-function hmacSHA512(key, data) {
+export function hmacSHA512(key, data) {
     return createHmac('sha512', key)
         .update(data)
         .digest();
 }
-exports.hmacSHA512 = hmacSHA512;
