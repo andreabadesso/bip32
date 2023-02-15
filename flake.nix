@@ -17,7 +17,7 @@
         pkgs.devshell.mkShell {
           packages = with pkgs; [
             nixpkgs-fmt
-            nodejs-14_x
+            nodejs-12_x
           ];
         };
     });
